@@ -17,7 +17,9 @@ const orderExample = {
   itemType: "Серьги",
   productionCost: 400,
   itemTags: [],
-  instanceTags: ["распродажа 20"]
+  instanceTags: ["распродажа 20"],
+  probe: 'AU_585',
+  stoneType: 'Без камней'
 };
 
 
@@ -47,7 +49,7 @@ function calcPaidAndUpgradeParts(orders, user, payMethods) {
   }
   // Проверить влияние метода оплаты
   // if (orders.some())
-  
+
 
   // передаем функции покупки и долю, которую можно поменять
   // возвращаем разбитые покупки на оплачиваемую и прокачеваемую часть
@@ -75,12 +77,12 @@ function calcPaidAndUpgradeParts(orders, user, payMethods) {
     orders.forEach(order => {
       currentSum += order.weight;
       if (currentSum <= upgradeWeight) {
-        output.paidPart.orders.push({...order, isFullOrder: true });
+        output.paidPart.orders.push({ ...order, isFullOrder: true });
       } else if (currentSum > upgradeWeight && oldSum < upgradeWeight) {
         const paidPartWeight = upgradeWeight - oldSum;
         const upgradePartWeight = currentSum - upgradeWeight;
-        output.paidPart.orders.push({...order, weight: paidPartWeight ,isFullOrder: false });
-        output.upgradePart.orders.push({...order, weight: upgradePartWeight ,isFullOrder: false });
+        output.paidPart.orders.push({ ...order, weight: paidPartWeight, isFullOrder: false });
+        output.upgradePart.orders.push({ ...order, weight: upgradePartWeight, isFullOrder: false });
       } else {
         output.upgradePart.orders.push({ ...order, isFullOrder: false });
       }
