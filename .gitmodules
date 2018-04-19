@@ -1,0 +1,3 @@
+[submodule "server/database"]
+	path = server/database
+	url = https://rondim@github.com/lueurxax/prismaDatabase.git
