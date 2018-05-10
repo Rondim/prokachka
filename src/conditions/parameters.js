@@ -151,31 +151,47 @@ const output = {
     sequence: ['234']
   },
   scrapMetalsInfo: {
-    metals: {
-      '1': {
-        id: '1',
-        weight: 1.33,
-        probe: 'AU_585'
-      },
-      '2': {
-        id: '2',
+    metals: [
+      {
         weight: 2.06,
-        probe: 'AU_375'
-      }
-    },
-    metalParts: {
-      '1': {
-        weight: 0.12,
-        cost: 1400,
-        type: 'upgrade_1400'
+        probe: 'AU_375',
+        parts: [
+          {
+            weight: 0.12,
+            gramCost: 1400,
+            type: 'upgrade_1400'
+          },
+          {
+            weight: 1.94,
+            gramCost: 1550,
+            type: 'exchange_1550'
+          }
+        ]
       },
-      '2': {
-        weight: 1.33,
+      {
+        weight: 1.37,
+        probe: 'AU_585'
+      }
+    ],
+    metalsCost: {
+      upgrade: {
+        cost: 1400,
+        weight: 0.13
+      },
+      exchangeHigh: {
+        cost: 1950,
+        weight: 1.23
+      },
+      exchangeLow: {
         cost: 1550,
-        type: 'exchange_1550'
+        weight: 2.33
+      },
+      purchase: {
+        cost: 1350,
+        weight: 3.00
       }
     },
-    sequence: ['1', '2']
+
   },
   errors: {
     ordersInfo: [],

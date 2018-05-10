@@ -22,22 +22,16 @@ describe('calcExchangeMetalCost', () => {
     testUpgrades = _.cloneDeep(upgrades);
     testScrapMetals = _.cloneDeep(scrapMetals);
     testUser = _.cloneDeep(user);
+    testOrders.push({
+      id: '4',
+      probe: 'AU_585',
+      weight: 4,
+      cost: 14400,
+      productionCost: 390,
+      tags: []
+    });
   });
   describe('isPurchase false', () => {
-    beforeEach(() => {
-      testOrders.push({
-        id: '4',
-        probe: 'AU_585',
-        weight: 4,
-        cost: 14400,
-        productionCost: 390,
-        tags: []
-      });
-    })
-
-    it('works without scrapMetals', () => {
-      testScrapMetals = { metals: [], isPurchase: false };
-    });
     it('weightForExchange < ordersWeightWithoutSales', () => {
       testUpgrades = [{
         id: '31', probe: 'AU_585', weight: 1.7, actualWeight: 1.6
@@ -45,11 +39,167 @@ describe('calcExchangeMetalCost', () => {
       data = init(testOrders, testScrapMetals, testUpgrades, testUser);
       data = calcExchangeMetalCost(data);
       const {
-        scrapMetalsInfo: { metalParts } 
+        scrapMetalsInfo: { metals, metalsCost }
       } = data;
-      // console.log(data);
 
-      // expect(metalParts['0'][])
+      expect(metals[0]['parts'][0]['weight']).toBeCloseTo(0.1);
+      expect(metals[0]['parts'][0]['gramCost']).toBeCloseTo(1400);
+      expect(metals[0]['parts'][0]['type']).toBe('upgrade_1400');
+      expect(metals[0]['parts'][1]['weight']).toBeCloseTo(0.95);
+      expect(metals[0]['parts'][1]['gramCost']).toBeCloseTo(1550);
+      expect(metals[0]['parts'][1]['type']).toBe('exchange_1550');
+      expect(metals[1]['parts'][0]['weight']).toBeCloseTo(2.03);
+      expect(metals[1]['parts'][0]['gramCost']).toBeCloseTo(1544.7009, 4);
+      expect(metals[1]['parts'][0]['type']).toBe('exchange_1550');
+      expect(metals[2]['parts'][0]['weight']).toBeCloseTo(1.34);
+      expect(metals[2]['parts'][0]['gramCost']).toBeCloseTo(993.5897, 4);
+      expect(metals[2]['parts'][0]['type']).toBe('exchange_1550');
     });
+    it('weightForExchange > ordersWeightWithoutSales, but metalCost < toPay', () => {
+      testUpgrades = [{
+        id: '31', probe: 'AU_585', weight: 1.7, actualWeight: 1.6
+      }];
+      testScrapMetals.metals.push({
+        weight: 4, probe: 'AU_585'
+      });
+      
+      data = init(testOrders, testScrapMetals, testUpgrades, testUser);
+      data = calcExchangeMetalCost(data);
+      const {
+        scrapMetalsInfo: { metals, metalsCost }
+      } = data;
+
+      expect(metals[0]['parts'][0]['weight']).toBeCloseTo(0.1);
+      expect(metals[0]['parts'][0]['gramCost']).toBeCloseTo(1400);
+      expect(metals[0]['parts'][0]['type']).toBe('upgrade_1400');
+      expect(metals[0]['parts'][1]['weight']).toBeCloseTo(0.95);
+      expect(metals[0]['parts'][1]['gramCost']).toBeCloseTo(1950);
+      expect(metals[0]['parts'][1]['type']).toBe('exchange_1950');
+      expect(metals[1]['parts'][0]['weight']).toBeCloseTo(2.03);
+      expect(metals[1]['parts'][0]['gramCost']).toBeCloseTo(1943.3333, 4);
+      expect(metals[1]['parts'][0]['type']).toBe('exchange_1950');
+      expect(metals[2]['parts'][0]['weight']).toBeCloseTo(1.34);
+      expect(metals[2]['parts'][0]['gramCost']).toBeCloseTo(1250);
+      expect(metals[2]['parts'][0]['type']).toBe('exchange_1950');
+      expect(metals[3]['parts'][0]['weight']).toBeCloseTo(1.3834, 4);
+      expect(metals[3]['parts'][0]['gramCost']).toBeCloseTo(1950);
+      expect(metals[3]['parts'][0]['type']).toBe('exchange_1950');
+      expect(metals[3]['parts'][1]['weight']).toBeCloseTo(2.61665, 5);
+      expect(metals[3]['parts'][1]['gramCost']).toBeCloseTo(1550);
+      expect(metals[3]['parts'][1]['type']).toBe('exchange_1550');
+    });
+
+    it('weightForExchange > ordersWeightWithoutSales, but metalCost < toPay', () => {
+      testUpgrades = [{
+        id: '31', probe: 'AU_585', weight: 1.7, actualWeight: 1.6
+      }];
+      testScrapMetals.metals.push({
+        weight: 4, probe: 'AU_585'
+      });
+
+      data = init(testOrders, testScrapMetals, testUpgrades, testUser);
+      data = calcExchangeMetalCost(data);
+      const {
+        scrapMetalsInfo: { metals, metalsCost }
+      } = data;
+
+      expect(metals[0]['parts'][0]['weight']).toBeCloseTo(0.1);
+      expect(metals[0]['parts'][0]['gramCost']).toBeCloseTo(1400);
+      expect(metals[0]['parts'][0]['type']).toBe('upgrade_1400');
+      expect(metals[0]['parts'][1]['weight']).toBeCloseTo(0.95);
+      expect(metals[0]['parts'][1]['gramCost']).toBeCloseTo(1950);
+      expect(metals[0]['parts'][1]['type']).toBe('exchange_1950');
+      expect(metals[1]['parts'][0]['weight']).toBeCloseTo(2.03);
+      expect(metals[1]['parts'][0]['gramCost']).toBeCloseTo(1943.3333, 4);
+      expect(metals[1]['parts'][0]['type']).toBe('exchange_1950');
+      expect(metals[2]['parts'][0]['weight']).toBeCloseTo(1.34);
+      expect(metals[2]['parts'][0]['gramCost']).toBeCloseTo(1250);
+      expect(metals[2]['parts'][0]['type']).toBe('exchange_1950');
+      expect(metals[3]['parts'][0]['weight']).toBeCloseTo(1.3834, 4);
+      expect(metals[3]['parts'][0]['gramCost']).toBeCloseTo(1950);
+      expect(metals[3]['parts'][0]['type']).toBe('exchange_1950');
+      expect(metals[3]['parts'][1]['weight']).toBeCloseTo(2.61665, 5);
+      expect(metals[3]['parts'][1]['gramCost']).toBeCloseTo(1550);
+      expect(metals[3]['parts'][1]['type']).toBe('exchange_1550');
+    });
+
+    it('weightForExchange > ordersWeightWithoutSales and metalCost > toPay', () => {
+      testUpgrades = [{
+        id: '31', probe: 'AU_585', weight: 1.7, actualWeight: 1.6
+      }];
+      testScrapMetals.metals.push({
+        weight: 15, probe: 'AU_585'
+      });
+
+      data = init(testOrders, testScrapMetals, testUpgrades, testUser);
+      data = calcExchangeMetalCost(data);
+      const {
+        scrapMetalsInfo: { metals, metalsCost }
+      } = data;
+
+      expect(metals[0]['parts'][0]['weight']).toBeCloseTo(0.1);
+      expect(metals[0]['parts'][0]['gramCost']).toBeCloseTo(1400);
+      expect(metals[0]['parts'][0]['type']).toBe('upgrade_1400');
+      expect(metals[0]['parts'][1]['weight']).toBeCloseTo(0.95);
+      expect(metals[0]['parts'][1]['gramCost']).toBeCloseTo(1950);
+      expect(metals[0]['parts'][1]['type']).toBe('exchange_1950');
+      expect(metals[1]['parts'][0]['weight']).toBeCloseTo(2.03);
+      expect(metals[1]['parts'][0]['gramCost']).toBeCloseTo(1943.3333, 4);
+      expect(metals[1]['parts'][0]['type']).toBe('exchange_1950');
+      expect(metals[2]['parts'][0]['weight']).toBeCloseTo(1.34);
+      expect(metals[2]['parts'][0]['gramCost']).toBeCloseTo(1250);
+      expect(metals[2]['parts'][0]['type']).toBe('exchange_1950');
+      expect(metals[3]['parts'][0]['weight']).toBeCloseTo(1.3834, 4);
+      expect(metals[3]['parts'][0]['gramCost']).toBeCloseTo(1950);
+      expect(metals[3]['parts'][0]['type']).toBe('exchange_1950');
+      expect(metals[3]['parts'][1]['weight']).toBeCloseTo(12.475097, 6);
+      expect(metals[3]['parts'][1]['gramCost']).toBeCloseTo(1550);
+      expect(metals[3]['parts'][1]['type']).toBe('exchange_1550');
+      expect(metals[3]['parts'][2]['weight']).toBeCloseTo(1.14155, 5);
+      expect(metals[3]['parts'][2]['gramCost']).toBeCloseTo(1350);
+      expect(metals[3]['parts'][2]['type']).toBe('purchase_1350');
+      expect(metalsCost.upgrade.weight).toBeCloseTo(0.1);
+      expect(metalsCost.upgrade.gramCost).toBe(1400);
+      expect(metalsCost.exchangeHigh.weight).toBeCloseTo(5.21538, 5);
+      expect(metalsCost.exchangeHigh.gramCost).toBe(1950);
+      expect(metalsCost.exchangeLow.weight).toBeCloseTo(12.475, 3);
+      expect(metalsCost.exchangeLow.gramCost).toBe(1550);
+      expect(metalsCost.purchase.weight).toBeCloseTo(1.14);
+      expect(metalsCost.purchase.gramCost).toBe(1350);
+      expect(metalsCost.totalCost).toBeCloseTo(31187.5);
+    });
+
+  });
+  
+
+  describe('isPurchase true', () => {
+    beforeEach(() => {
+      testScrapMetals.isPurchase = true;
+    });
+    it('weightForExchange = 0', () => {
+      testUpgrades = [{
+        id: '31', probe: 'AU_585', weight: 1.7, actualWeight: 1.6
+      }];
+      data = init(testOrders, testScrapMetals, testUpgrades, testUser);
+      data = calcExchangeMetalCost(data);
+      const {
+        scrapMetalsInfo: { metals, metalsCost, weightForExchange585 }
+      } = data;
+
+      expect(weightForExchange585).toBe(0);
+      expect(metals[0]['parts'][0]['weight']).toBeCloseTo(0.1);
+      expect(metals[0]['parts'][0]['gramCost']).toBeCloseTo(1400);
+      expect(metals[0]['parts'][0]['type']).toBe('upgrade_1400');
+      expect(metals[0]['parts'][1]['weight']).toBeCloseTo(0.95);
+      expect(metals[0]['parts'][1]['gramCost']).toBeCloseTo(1350);
+      expect(metals[0]['parts'][1]['type']).toBe('purchase_1350');
+      expect(metals[1]['parts'][0]['weight']).toBeCloseTo(2.03);
+      expect(metals[1]['parts'][0]['gramCost']).toBeCloseTo(1345.3846, 4);
+      expect(metals[1]['parts'][0]['type']).toBe('purchase_1350');
+      expect(metals[2]['parts'][0]['weight']).toBeCloseTo(1.34);
+      expect(metals[2]['parts'][0]['gramCost']).toBeCloseTo(865.3846, 4);
+      expect(metals[2]['parts'][0]['type']).toBe('purchase_1350');
+    });
+
   });
 });

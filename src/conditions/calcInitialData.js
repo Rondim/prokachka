@@ -20,7 +20,10 @@ export default function calcInitialData(
   const ordersWeightToCount585 = orders.reduce((sum, order) => {
     return sum += order.weightToCount585;
   }, 0);
- 
+  // Посчитаем общую стоимость всех покупок
+  const ordersCost = orders.reduce((sum, order) => {
+    return sum += order.cost;
+  }, 0);
   // Посчитаем общую массу изделий
   const ordersWeight = orders.reduce((sum, order) => {
     return sum += order.weight;
@@ -65,6 +68,7 @@ export default function calcInitialData(
     sequence: orders.map(({ id }) => id),
     paidParts: null,
     upgradeParts: null,
+    ordersCost,
     ordersWeight,
     ordersWeight585,
     ordersWeightToCount585,
@@ -72,13 +76,13 @@ export default function calcInitialData(
     discounts: {
       ordersDiscount: null,
       extraDiscount: null
-    }
+    },
+    toPay: null
   };
 
   const scrapMetalsInfo = {
-    metals: arrToObjByKey(null, scrapMetals.metals),
-    sequence: scrapMetals.metals.map((m, index) => index.toString()),
-    metalParts: null,
+    metals,
+    metalsCost: null,
     scrapMetalsWeight585,
     weightForExchange585,
     weightForPurchase585,
@@ -86,8 +90,7 @@ export default function calcInitialData(
   };
 
   const upgradesInfo = {
-    upgrades: arrToObjByKey('id', upgrades),
-    sequence: upgrades.map(({ id }) => id),
+    upgrades,
     upgradesWeight585,
     actualUpgradeWeight585,
     addWeight585,

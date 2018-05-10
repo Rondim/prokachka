@@ -19,6 +19,7 @@ describe('calcInitialData', () => {
 
     expect(result.ordersInfo.ordersWeightToCount585).toBeCloseTo(2.9154, 4);
     expect(result.ordersInfo.ordersWeight).toBeCloseTo(14.8);
+    expect(result.ordersInfo.ordersCost).toBeCloseTo(22730);
     expect(result.ordersInfo.ordersWeight585).toBeCloseTo(5.2054, 4);
     expect(result.upgradesInfo.upgradesWeight585).toBeCloseTo(3.1141, 4);
     expect(result.upgradesInfo.actualUpgradeWeight585).toBeCloseTo(2.8044, 4);
@@ -48,7 +49,7 @@ describe('calcInitialData', () => {
     expect(result.ordersInfo.discounts).toEqual({
       ordersDiscount: null, extraDiscount: null
     });
-    expect(result.upgradesInfo.upgrades).toEqual({});
+    expect(result.upgradesInfo.upgrades).toEqual([]);
     expect(result.upgradesInfo.upgradesWeight585).toBeCloseTo(0);
     expect(result.upgradesInfo.maxUpgradeWeightForOrders585).toBe(null);
     expect(result.upgradesInfo.weightToUpgrade585).toBe(null);
@@ -56,7 +57,8 @@ describe('calcInitialData', () => {
     expect(result.upgradesInfo.actualUpgradeWeight585).toBeCloseTo(0);
     expect(result.upgradesInfo.addWeight585).toBeCloseTo(0);
     expect(result.upgradesInfo.actualAddWeight585).toBeCloseTo(0);
-    expect(result.scrapMetalsInfo.metals).toEqual({});
+    expect(result.scrapMetalsInfo.metals).toEqual([]);
+    expect(result.scrapMetalsInfo.metalsCost).toBe(null);
     expect(result.scrapMetalsInfo.scrapMetalsWeight585).toBeCloseTo(0);
     expect(result.scrapMetalsInfo.weightForExchange585).toBeCloseTo(0);
     expect(result.scrapMetalsInfo.weightForPurchase585).toBeCloseTo(0);
