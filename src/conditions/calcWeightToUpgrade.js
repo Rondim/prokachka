@@ -48,7 +48,7 @@ export default function calcWeightToUpgrade(data) {
     if (upgradesWeight585 > grams.super) {
       errors.upgradesInfo.push('Граммов меньше, чем масса выбранных изделий');
     } else if (maxUpgradeWeightForOrders585 < upgradesWeight585) {
-      errors.upgradesInfo.push('Масса выбранных изделий больше максимально разрешенной массы');
+      errors.upgradesInfo.push('Масса выбранных изделий в прокачку больше максимально разрешенной массы');
     } else {
       weightToUpgrade585 = actualAddWeight585 + actualUpgradeWeight585;
     }

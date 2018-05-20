@@ -19,3 +19,10 @@ export const EXCHANGE_HIGH_METAL_COST = 1950;
 export const EXCHANGE_HIGH_METAL_TYPE = 'exchange_1950';
 export const EXCHANGE_LOW_METAL_COST = 1550;
 export const EXCHANGE_LOW_METAL_TYPE = 'exchange_1550';
+
+export const prodCostDefaults = {
+  DEFAULT_METAL_COST: 1450,
+  DEFAULT_UP: 1.774,
+  DEFAULT_P_COST: 390,
+  DEFAULT_DISCOUNT: 0.12
+};
