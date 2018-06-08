@@ -124,7 +124,7 @@ const output = {
     },
     upgradeParts: {
       '1': {
-        discount: 1,
+        discount: 1990,
         toPay: 3100,
         weight: 1.51,
         parted: false

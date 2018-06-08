@@ -1,5 +1,7 @@
-import { calc585weight, arrToObjByKey, getAuShare } from './utils';
+import { calc585weight, arrToObjByKey, getAuShare, isSales } from './utils';
 import _ from 'lodash';
+
+import { SALES_TAGS } from './consts';
 // Здерь рассчитываем все необходимые данные из входящих данных,
 // необходимые для дальнейшей логики
 
@@ -117,11 +119,8 @@ export default function calcInitialData(
 
 export function setWeightToCountForOrders(orders) {
   orders.forEach(order => {
-    if (order['probe'] === 'AG_925' || order.tags.includes('распродажа 20')) {
-      order['weightToCount585'] = 0;
-    } else {
-      order['weightToCount585'] = calc585weight(order, 'weight');
-    }
+    const au585weight = calc585weight(order, 'weight');
+    order['weightToCount585'] = isSales(order) ? 0 : au585weight;
   });
   return orders;
 }
@@ -129,11 +128,11 @@ export function setWeightToCountForOrders(orders) {
 export function sortOrders(orders) {
   const notAuOrders = orders.filter(order => getAuShare(order.probe) === 0);
   const auSalesOrders = orders.filter(order => {
-    return getAuShare(order.probe) !== 0 && order.tags.includes('распродажа 20');
+    return getAuShare(order.probe) !== 0 && isSales(order);
   });
   const leftAuOrders = orders
     .filter(order => {
-      return getAuShare(order.probe) !== 0 && !order.tags.includes('распродажа 20');
+      return getAuShare(order.probe) !== 0 && !isSales(order);
     })
     .sort((a, b) => {
       const aProductionCostIn585 = a.productionCost * (0.585 / getAuShare(a.probe));

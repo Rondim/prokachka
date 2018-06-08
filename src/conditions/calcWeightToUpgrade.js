@@ -1,3 +1,5 @@
+import { STANDART_UPGRADE_SHARE, EXCHANGE_UPGRADE_SHARE } from './consts';
+
 export default function calcWeightToUpgrade(data) {
   const {
     scrapMetalsInfo: { weightForExchange585 },
@@ -23,8 +25,8 @@ export default function calcWeightToUpgrade(data) {
   
   if (upgradeMode === 'usual') {
     const shareToUpgrade = weightForExchange585 > 0
-      ? 0.25
-      : 0.5
+      ? EXCHANGE_UPGRADE_SHARE
+      : STANDART_UPGRADE_SHARE
     ;
     maxUpgradeWeightForOrders585 = ordersWeightToCount585 * shareToUpgrade;
     minOrdersWeightForUpgrades585 = upgradesWeight585 / shareToUpgrade;

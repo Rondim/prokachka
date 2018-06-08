@@ -1,6 +1,6 @@
 import { upgrades } from "./tests/fixtures";
-import { calc585weight } from './utils';
-import { DISCOUNT, UPGRADE_METAL_COST } from './consts';
+import { calc585weight, isSales, getDiscountForSales } from './utils';
+import { UPGRADE_METAL_COST, memberDiscounts } from './consts';
 import _ from 'lodash';
 
 export default function calcDiscounts(data) {
@@ -22,7 +22,7 @@ export default function calcDiscounts(data) {
 
   const ordersWeightWithoutSales585 = _.reduce(paidParts, (sum, part, id) => {
     const { weight } = part;
-    if (!orders[id]['tags'].includes('распродажа 20')) {
+    if (!isSales(orders[id])) {
       sum += (weight / orders[id]['weight']) * calc585weight(orders[id], 'weight');
     }
     return sum;
@@ -31,11 +31,12 @@ export default function calcDiscounts(data) {
   if (userInfo === null || errors.upgradesInfo.length > 0) {
     paidParts = calcDiscountForPaidParts(ordersInfo, 0, 0);
   } else {
+    const discount = memberDiscounts[userInfo.status];
     if (ordersWeightWithoutSales585 < weightForExchange585) {
-      paidParts = calcDiscountForPaidParts(ordersInfo, 0, DISCOUNT);
+      paidParts = calcDiscountForPaidParts(ordersInfo, 0, discount);
       upgradeParts = calcDiscountForUpgradeParts(ordersInfo)
     } else {
-      paidParts = calcDiscountForPaidParts(ordersInfo, DISCOUNT, DISCOUNT);
+      paidParts = calcDiscountForPaidParts(ordersInfo, discount, discount);
       upgradeParts = calcDiscountForUpgradeParts(ordersInfo)
     }
   }
@@ -70,16 +71,15 @@ export default function calcDiscounts(data) {
 export function calcDiscountForPaidParts(ordersInfo, auDiscPercent, agDiscPercent) {
   let { paidParts, orders } = ordersInfo;
   paidParts = _.forEach(paidParts, (part, id) => {
-    let discount;
     const { cost, weight } = orders[id];
-    if (orders[id]['tags'].includes('распродажа 20')) {
-      discount = 0.20 * cost * (part.weight / weight);
-    } else if (calc585weight(orders[id], 'weight') === 0) {
-      discount = agDiscPercent * cost * (part.weight / weight);
-    } else {
-      discount = auDiscPercent * cost * (part.weight / weight);
-    }
-    part.discount = discount;
+    const discountPercent = (isSales(orders[id]))
+      ? getDiscountForSales(orders[id])
+      : (calc585weight(orders[id], 'weight') === 0)
+        ? agDiscPercent
+        : auDiscPercent
+    ;
+
+    part.discount = discountPercent * cost * (part.weight / weight);
   });
 
   return paidParts;
