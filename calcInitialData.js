@@ -1,14 +1,14 @@
 import { calc585weight, arrToObjByKey, getAuShare, isSales } from './utils';
 import _ from 'lodash';
 
-import { SALES_TAGS } from './consts';
+// import { SALES_TAGS } from './consts';
 // Здерь рассчитываем все необходимые данные из входящих данных,
 // необходимые для дальнейшей логики
 
 export default function calcInitialData(
-  orders = [], 
-  scrapMetals = { metals: [], isPurchase: false }, 
-  upgrades = [], 
+  orders = [],
+  scrapMetals = { metals: [], isPurchase: false },
+  upgrades = [],
   user
 ) {
   // ORDERS
@@ -47,7 +47,7 @@ export default function calcInitialData(
   }, 0);
   // Посчитать массу, которую можно возместить ломом при прокачке
   const addWeight585 = upgradesWeight585 - actualUpgradeWeight585;
-  
+
   // SCRAP METALS
   // Посчитать массу лома в 585
   const { metals, isPurchase } = scrapMetals;

@@ -20,15 +20,12 @@ export default function calcExchangeMetalCost(data) {
     }
   } = data;
 
-  let { metals, isPurchase,
-    weightForExchange585, weightForPurchase585, scrapMetalsWeight585 } = scrapMetalsInfo;
+  let { metals, isPurchase, weightForExchange585, weightForPurchase585 } = scrapMetalsInfo;
 
   const discount = discounts.ordersDiscount + discounts.extraDiscount;
   const upgradeMetalCost = (actualAddWeight585 + actualUpgradeWeight585) * UPGRADE_METAL_COST;
 
   metals.forEach(metal => metal.parts = []);
-
-  
 
   metals = setMetalParts(metals, actualAddWeight585, UPGRADE_METAL_COST, UPGRADE_METAL_TYPE);
 
@@ -55,12 +52,9 @@ export default function calcExchangeMetalCost(data) {
         leftToExchange = leftToExchange - lowCostExchangeWeight;
         metals = setMetalParts(metals, leftToExchange, PURCHASE_METAL_COST, PURCHASE_METAL_TYPE);
       }
-
     }
   }
 
-  
-  
   const metalsCost = calcMetalsCost(metals);
   const toPay = ordersCost - metalsCost.totalCost - discount - upgradeMetalCost;
 
@@ -107,7 +101,7 @@ function setMetalParts(metals, workWeight585, metalCost585, operationType) {
 
 function getLeftMetalWeight(metal) {
   if (metal.parts.length === 0) return metal.weight;
-  
+
   const usedWeight = metal.parts.reduce((sum, part) => sum += part.weight, 0);
   const leftWeight = metal.weight - usedWeight;
 
