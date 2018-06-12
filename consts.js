@@ -1,15 +1,15 @@
 // это просто константы их не надо думаю выносить в конфиги
 
 export const AU_SHARES = {
-  'AU_585': 0.585,
-  'AU_583': 0.583,
-  'AU_500': 0.500,
-  'AU_375': 0.375,
-  'AU_750': 0.750,
-  'AU_9999': 0.9999,
-  'AU_900': 0.900,
-  'AG_925': 0
-}; 
+  'Au 585': 0.585,
+  'Au 583': 0.583,
+  'Au 500': 0.500,
+  'Au 375': 0.375,
+  'Au 750': 0.750,
+  'Au 9999': 0.9999,
+  'Au 900': 0.900,
+  'Ag 925': 0
+};
 
 // Цены металлов в конфиг
 export const UPGRADE_METAL_COST = 1400;
@@ -21,11 +21,11 @@ export const EXCHANGE_HIGH_METAL_TYPE = 'exchange_1950';
 export const EXCHANGE_LOW_METAL_COST = 1550;
 export const EXCHANGE_LOW_METAL_TYPE = 'exchange_1550';
 
- // Данные необходимые для расчета productionCost, 
+ // Данные необходимые для расчета productionCost,
  // скорее всего конфиг для сервера только
 export const prodCostDefaults = {
   DEFAULT_METAL_COST: 1450,
-  DEFAULT_UP: 1.774, 
+  DEFAULT_UP: 1.774,
   DEFAULT_P_COST: 390,
   DEFAULT_DISCOUNT: 0.12
 };
@@ -34,13 +34,13 @@ export const prodCostDefaults = {
 export const SALES_TAGS = ['распродажа 20']; // список тегов для распродажи
 export const salesDiscounts = {
   'распродажа 20': 0.20
-}; 
+};
 // Скидки для разных пользователей в конфиг
 export const memberDiscounts = {
   'SILVER': 0.12,
   'GOLD': 0.15,
   'PLATINUM': 0.18
-}; 
+};
 
 // Доля, которую можно прокачать в конфиг
 export const EXCHANGE_UPGRADE_SHARE = 0.25;
