@@ -24,17 +24,19 @@ describe('calcExchangeMetalCost', () => {
     testUser = _.cloneDeep(user);
     testOrders.push({
       id: '4',
-      probe: 'AU_585',
+      probe: 'Au 585',
       weight: 4,
-      cost: 14400,
-      productionCost: 390,
+      cost: {
+        retail: 14400,
+        costOfWork: 390,
+      },
       tags: []
     });
   });
   describe('isPurchase false', () => {
     it('weightForExchange < ordersWeightWithoutSales', () => {
       testUpgrades = [{
-        id: '31', probe: 'AU_585', weight: 1.7, actualWeight: 1.6
+        id: '31', probe: 'Au 585', weight: 1.7, weightOfMetal: 1.6
       }];
       data = init(testOrders, testScrapMetals, testUpgrades, testUser);
       data = calcExchangeMetalCost(data);
@@ -57,12 +59,12 @@ describe('calcExchangeMetalCost', () => {
     });
     it('weightForExchange > ordersWeightWithoutSales, but metalCost < toPay', () => {
       testUpgrades = [{
-        id: '31', probe: 'AU_585', weight: 1.7, actualWeight: 1.6
+        id: '31', probe: 'Au 585', weight: 1.7, weightOfMetal: 1.6
       }];
       testScrapMetals.metals.push({
-        weight: 4, probe: 'AU_585'
+        weight: 4, probe: 'Au 585'
       });
-      
+
       data = init(testOrders, testScrapMetals, testUpgrades, testUser);
       data = calcExchangeMetalCost(data);
       const {
@@ -91,10 +93,10 @@ describe('calcExchangeMetalCost', () => {
 
     it('weightForExchange > ordersWeightWithoutSales, but metalCost < toPay', () => {
       testUpgrades = [{
-        id: '31', probe: 'AU_585', weight: 1.7, actualWeight: 1.6
+        id: '31', probe: 'Au 585', weight: 1.7, weightOfMetal: 1.6
       }];
       testScrapMetals.metals.push({
-        weight: 4, probe: 'AU_585'
+        weight: 4, probe: 'Au 585'
       });
 
       data = init(testOrders, testScrapMetals, testUpgrades, testUser);
@@ -125,10 +127,10 @@ describe('calcExchangeMetalCost', () => {
 
     it('weightForExchange > ordersWeightWithoutSales and metalCost > toPay', () => {
       testUpgrades = [{
-        id: '31', probe: 'AU_585', weight: 1.7, actualWeight: 1.6
+        id: '31', probe: 'Au 585', weight: 1.7, weightOfMetal: 1.6
       }];
       testScrapMetals.metals.push({
-        weight: 15, probe: 'AU_585'
+        weight: 15, probe: 'Au 585'
       });
 
       data = init(testOrders, testScrapMetals, testUpgrades, testUser);
@@ -168,9 +170,7 @@ describe('calcExchangeMetalCost', () => {
       expect(metalsCost.purchase.gramCost).toBe(1350);
       expect(metalsCost.totalCost).toBeCloseTo(31187.5);
     });
-
   });
-  
 
   describe('isPurchase true', () => {
     beforeEach(() => {
@@ -178,7 +178,7 @@ describe('calcExchangeMetalCost', () => {
     });
     it('weightForExchange = 0', () => {
       testUpgrades = [{
-        id: '31', probe: 'AU_585', weight: 1.7, actualWeight: 1.6
+        id: '31', probe: 'Au 585', weight: 1.7, weightOfMetal: 1.6
       }];
       data = init(testOrders, testScrapMetals, testUpgrades, testUser);
       data = calcExchangeMetalCost(data);
@@ -200,6 +200,5 @@ describe('calcExchangeMetalCost', () => {
       expect(metals[2]['parts'][0]['gramCost']).toBeCloseTo(865.3846, 4);
       expect(metals[2]['parts'][0]['type']).toBe('purchase_1350');
     });
-
   });
 });

@@ -24,7 +24,7 @@ export default function calcInitialData(
   }, 0);
   // Посчитаем общую стоимость всех покупок
   const ordersCost = orders.reduce((sum, order) => {
-    return sum += order.cost;
+    return sum += order.cost.retail;
   }, 0);
   // Посчитаем общую массу изделий
   const ordersWeight = orders.reduce((sum, order) => {
@@ -43,7 +43,7 @@ export default function calcInitialData(
   // Посчитать значение массы прокачки,
   // исходя из реальных масс изделий, которые принесли
   const actualUpgradeWeight585 = upgrades.reduce((sum, upgrade) => {
-    return sum += calc585weight(upgrade, 'actualWeight');
+    return sum += calc585weight(upgrade, 'weightOfMetal');
   }, 0);
   // Посчитать массу, которую можно возместить ломом при прокачке
   const addWeight585 = upgradesWeight585 - actualUpgradeWeight585;
@@ -135,8 +135,8 @@ export function sortOrders(orders) {
       return getAuShare(order.probe) !== 0 && !isSales(order);
     })
     .sort((a, b) => {
-      const aProductionCostIn585 = a.productionCost * (0.585 / getAuShare(a.probe));
-      const bProductionCostIn585 = b.productionCost * (0.585 / getAuShare(b.probe));
+      const aProductionCostIn585 = a.cost.costOfWork * (0.585 / getAuShare(a.probe));
+      const bProductionCostIn585 = b.cost.costOfWork * (0.585 / getAuShare(b.probe));
       return bProductionCostIn585 - aProductionCostIn585;
     });
 
@@ -155,8 +155,8 @@ export function setActualAddWeight(upgrades, actualAddWeight585) {
   let current585 = actualAddWeight585;
 
   upgrades.forEach(upgrade => {
-    const { weight, actualWeight } = upgrade;
-    const maxActualWeight = weight - actualWeight;
+    const { weight, weightOfMetal } = upgrade;
+    const maxActualWeight = weight - weightOfMetal;
     const maxActualWeight585 = maxActualWeight * (getAuShare(upgrade.probe) / 0.585);
     const newCurrent585 = current585 - maxActualWeight585;
     if (current585 <= 0) {

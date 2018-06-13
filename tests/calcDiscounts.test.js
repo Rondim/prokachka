@@ -48,9 +48,9 @@ describe('calcDiscounts', () => {
     it('works without exchanges', () => {
       testScrapMetals = { metals: [], isPurchase: false };
       data = init(testOrders, testScrapMetals, testUpgrades, testUser);
-      const { 
+      const {
         ordersInfo: { paidParts, upgradeParts, discounts },
-        errors 
+        errors
       } = calcDiscounts(data);
       expect(errors.upgradesInfo.length).toBe(0);
       expect(paidParts['1']['discount']).toBeCloseTo(670.8);
@@ -97,13 +97,15 @@ describe('calcDiscounts', () => {
     beforeEach(() => {
       testOrders.push({
         id: '4',
-        probe: 'AU_585',
+        probe: 'Au 585',
         weight: 4,
-        cost: 14400,
-        productionCost: 390,
+        cost: {
+          retail: 14400,
+          costOfWork: 390,
+        },
         tags: []
       });
-    })
+    });
     it('works without exchanges', () => {
       testScrapMetals = { metals: [], isPurchase: false };
       data = init(testOrders, testScrapMetals, testUpgrades, testUser);
@@ -122,13 +124,13 @@ describe('calcDiscounts', () => {
     })
     it('works with exchanges < ordersWeightWithoutSales', () => {
       testUpgrades = [{
-        id: '31', probe: 'AU_585', weight: 1.7, actualWeight: 1.6
+        id: '31', probe: 'Au 585', weight: 1.7, weightOfMetal: 1.6
       }];
       data = init(testOrders, testScrapMetals, testUpgrades, testUser);
       const {
         ordersInfo: { paidParts, upgradeParts, discounts },
         errors
-      } = calcDiscounts(data);;
+      } = calcDiscounts(data);
 
       expect(errors.upgradesInfo.length).toBe(0);
       expect(upgradeParts['1']['discount']).toBeCloseTo(2846.5);
@@ -141,9 +143,9 @@ describe('calcDiscounts', () => {
 
     it('works with exchanges >= ordersWeightWithoutSales', () => {
       testUpgrades = [{
-        id: '31', probe: 'AU_585', weight: 1.7, actualWeight: 1.6
+        id: '31', probe: 'Au 585', weight: 1.7, weightOfMetal: 1.6
       }];
-      testScrapMetals.metals.push({ weight: 3, probe: 'AU_585' });
+      testScrapMetals.metals.push({ weight: 3, probe: 'Au 585' });
       data = init(testOrders, testScrapMetals, testUpgrades, testUser);
       const {
         ordersInfo: { paidParts, upgradeParts, discounts },

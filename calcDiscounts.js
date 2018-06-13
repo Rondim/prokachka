@@ -18,7 +18,7 @@ export default function calcDiscounts(data) {
 
   let { orders, paidParts, upgradeParts } = ordersInfo;
   let ordersDiscount = 0;
-  let extraDiscount = 0; 
+  let extraDiscount = 0;
 
   const ordersWeightWithoutSales585 = _.reduce(paidParts, (sum, part, id) => {
     const { weight } = part;
@@ -31,13 +31,13 @@ export default function calcDiscounts(data) {
   if (userInfo === null || errors.upgradesInfo.length > 0) {
     paidParts = calcDiscountForPaidParts(ordersInfo, 0, 0);
   } else {
-    const discount = memberDiscounts[userInfo.status];
+    const discount = memberDiscounts[userInfo.type];
     if (ordersWeightWithoutSales585 < weightForExchange585) {
       paidParts = calcDiscountForPaidParts(ordersInfo, 0, discount);
-      upgradeParts = calcDiscountForUpgradeParts(ordersInfo)
+      upgradeParts = calcDiscountForUpgradeParts(ordersInfo);
     } else {
       paidParts = calcDiscountForPaidParts(ordersInfo, discount, discount);
-      upgradeParts = calcDiscountForUpgradeParts(ordersInfo)
+      upgradeParts = calcDiscountForUpgradeParts(ordersInfo);
     }
   }
 
@@ -61,7 +61,7 @@ export default function calcDiscounts(data) {
     ...data,
     ordersInfo
   };
-  
+
 
   // Если масса металла в обмен больше, то скидки нет
   // Если рассрочка, то скидка такая-то
@@ -71,7 +71,7 @@ export default function calcDiscounts(data) {
 export function calcDiscountForPaidParts(ordersInfo, auDiscPercent, agDiscPercent) {
   let { paidParts, orders } = ordersInfo;
   paidParts = _.forEach(paidParts, (part, id) => {
-    const { cost, weight } = orders[id];
+    const { cost: { retail }, weight } = orders[id];
     const discountPercent = (isSales(orders[id]))
       ? getDiscountForSales(orders[id])
       : (calc585weight(orders[id], 'weight') === 0)
@@ -79,7 +79,7 @@ export function calcDiscountForPaidParts(ordersInfo, auDiscPercent, agDiscPercen
         : auDiscPercent
     ;
 
-    part.discount = discountPercent * cost * (part.weight / weight);
+    part.discount = discountPercent * retail * (part.weight / weight);
   });
 
   return paidParts;
@@ -92,8 +92,8 @@ export function calcDiscountForUpgradeParts(ordersInfo) {
     const { weight } = part;
     const weight585 = (weight / order.weight) * calc585weight(order, 'weight');
     const upgradeMetalCost = weight585 * UPGRADE_METAL_COST;
-    const upgradePartCost = order.cost * (weight / order.weight);
-    const discount = upgradePartCost - upgradeMetalCost - (weight * order.productionCost);
+    const upgradePartCost = order.cost.retail * (weight / order.weight);
+    const discount = upgradePartCost - upgradeMetalCost - (weight * order.cost.costOfWork);
     part.discount = discount;
   });
   return upgradeParts;

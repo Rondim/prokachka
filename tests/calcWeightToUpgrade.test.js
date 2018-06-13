@@ -41,11 +41,11 @@ describe('calcShareToUpgrade', () => {
     });
 
     it('works with exchange and insufficient grams and appropriate upgradesWeight', () => {
-      data.userInfo.grams = { usual: 0, super: 0 };
+      data.userInfo.member.grams = { usual: 0, super: 0 };
       data.scrapMetalsInfo.weightForExchange585 = 1;
       data.ordersInfo.ordersWeightToCount585 = 2;
       data.upgradesInfo.upgradesWeight585 = 0.5;
-      
+
       const result = calcWeightToUpgrade(data);
 
       expect(result.errors.upgradesInfo.length).toBe(1);
@@ -86,7 +86,7 @@ describe('calcShareToUpgrade', () => {
       expect(result.upgradesInfo.minOrdersWeightForUpgrades585).toBeCloseTo(8);
     });
     it('works with no exchange and sufficient grams and appropriate upgrades weight', () => {
-      data.userInfo.grams = { usual: 20, super: 20 };
+      data.userInfo.member.grams = { usual: 20, super: 20 };
       data.scrapMetalsInfo.weightForExchange585 = 0;
       data.ordersInfo.ordersWeightToCount585 = 2;
       data.upgradesInfo.upgradesWeight585 = 0.5;
@@ -104,7 +104,7 @@ describe('calcShareToUpgrade', () => {
 
   describe('super mode', () => {
     it('works with exchange and sufficient grams and appropriate upgradesWeight', () => {
-      data.userInfo = { upgradeMode: 'super', grams: { usual: 20, super: 20 } };
+      data.userInfo = { upgradeMode: 'super', member: { grams: { usual: 20, super: 20 } } };
       data.scrapMetalsInfo.weightForExchange585 = 1;
       data.ordersInfo.ordersWeight585 = 2;
       data.upgradesInfo.upgradesWeight585 = 0.5;
@@ -119,7 +119,7 @@ describe('calcShareToUpgrade', () => {
     });
 
     it('works with noexchange and sufficient grams and appropriate upgradesWeight', () => {
-      data.userInfo = { upgradeMode: 'super', grams: { usual: 20, super: 20 } };
+      data.userInfo = { upgradeMode: 'super', member: { grams: { usual: 20, super: 20 } } };
       data.scrapMetalsInfo.weightForExchange585 = 0;
       data.ordersInfo.ordersWeight585 = 2;
       data.upgradesInfo.upgradesWeight585 = 0.5;
@@ -134,7 +134,7 @@ describe('calcShareToUpgrade', () => {
     });
 
     it('works with noexchange and insufficient grams and appropriate upgradesWeight', () => {
-      data.userInfo = { upgradeMode: 'super', grams: { usual: 20, super: 0 } };
+      data.userInfo = { upgradeMode: 'super', member: { grams: { usual: 20, super: 0 } } };
       data.scrapMetalsInfo.weightForExchange585 = 0;
       data.ordersInfo.ordersWeight585 = 2;
       data.upgradesInfo.upgradesWeight585 = 0.5;
@@ -149,7 +149,7 @@ describe('calcShareToUpgrade', () => {
     });
 
     it('works with noexchange and sufficient grams and inappropriate upgradesWeight', () => {
-      data.userInfo = { upgradeMode: 'super', grams: { usual: 20, super: 20 } };
+      data.userInfo = { upgradeMode: 'super', member: { grams: { usual: 20, super: 20 } } };
       data.scrapMetalsInfo.weightForExchange585 = 0;
       data.ordersInfo.ordersWeight585 = 2;
       data.upgradesInfo.upgradesWeight585 = 3;
@@ -164,7 +164,7 @@ describe('calcShareToUpgrade', () => {
     });
 
     it('works with noexchange and insufficient grams and inappropriate upgradesWeight', () => {
-      data.userInfo = { upgradeMode: 'super', grams: { usual: 20, super: 0 } };
+      data.userInfo = { upgradeMode: 'super', member: { grams: { usual: 20, super: 0 } } };
       data.scrapMetalsInfo.weightForExchange585 = 0;
       data.ordersInfo.ordersWeight585 = 2;
       data.upgradesInfo.upgradesWeight585 = 3;
@@ -177,8 +177,5 @@ describe('calcShareToUpgrade', () => {
       expect(result.upgradesInfo.maxUpgradeWeightForOrders585).toBeCloseTo(2);
       expect(result.upgradesInfo.minOrdersWeightForUpgrades585).toBeCloseTo(3);
     });
-
   });
-
-  
 });

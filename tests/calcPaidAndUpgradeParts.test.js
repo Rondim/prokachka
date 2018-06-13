@@ -42,18 +42,19 @@ describe('calcPaidUpgradeParts', () => {
       expect(paidParts).toEqual({});
       expect(upgradeParts).toEqual({});
     });
-
   });
 
   describe('with user', () => {
     it('should work', () => {
       testScrapMetals = { metals: [], isPurchase: false };
-      testOrders.push({ 
-        id: '4', 
-        probe: 'AU_585',
-        weight: 4, 
-        cost: 14400, 
-        productionCost: 390,
+      testOrders.push({
+        id: '4',
+        probe: 'Au 585',
+        weight: 4,
+        cost: {
+          retail: 14400,
+          costOfWork: 390,
+        },
         tags: []
       });
       data = calcInitialData(testOrders, testScrapMetals, testUpgrades, testUser);

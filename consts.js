@@ -37,9 +37,9 @@ export const salesDiscounts = {
 };
 // Скидки для разных пользователей в конфиг
 export const memberDiscounts = {
-  'SILVER': 0.12,
-  'GOLD': 0.15,
-  'PLATINUM': 0.18
+  'Ag': 0.12,
+  'Au': 0.15,
+  'Pt': 0.18
 };
 
 // Доля, которую можно прокачать в конфиг

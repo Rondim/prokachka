@@ -10,19 +10,16 @@ export default function calcWeightToUpgrade(data) {
   } = data;
 
   const upgradeMode = userInfo ? userInfo.upgradeMode : null;
-  const grams = userInfo ? userInfo.grams : null;
+  const grams = userInfo ? userInfo.member.grams : null;
   const totalGrams = grams !== null ? grams.super + grams.usual : null;
 
   let maxUpgradeWeightForOrders585 = null;
   let minOrdersWeightForUpgrades585 = null;
   let weightToUpgrade585 = null;
 
-  
-
   if (upgradeMode === null) {
     weightToUpgrade585 = 0;
   }
-  
   if (upgradeMode === 'usual') {
     const shareToUpgrade = weightForExchange585 > 0
       ? EXCHANGE_UPGRADE_SHARE
@@ -37,8 +34,8 @@ export default function calcWeightToUpgrade(data) {
     } else {
       weightToUpgrade585 = actualAddWeight585 + actualUpgradeWeight585;
     }
-  } 
-  
+  }
+
   if (upgradeMode === 'super') {
     const shareToUpgrade = weightForExchange585 > 0
       ? 0
@@ -55,7 +52,6 @@ export default function calcWeightToUpgrade(data) {
       weightToUpgrade585 = actualAddWeight585 + actualUpgradeWeight585;
     }
   }
-
 
   return {
     ...data,

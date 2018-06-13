@@ -43,7 +43,6 @@ export default function calcExchangeMetalCost(data) {
       const highCostExchangeSum = ordersWeightWithoutSales585 * EXCHANGE_HIGH_METAL_COST;
       const leftToPay = ordersCost - discount - upgradeMetalCost - highCostExchangeSum;
       let leftToExchange = weightForExchange585 - ordersWeightWithoutSales585;
-
       if (leftToExchange * EXCHANGE_LOW_METAL_COST <= leftToPay) {
         metals = setMetalParts(metals, leftToExchange, EXCHANGE_LOW_METAL_COST, EXCHANGE_LOW_METAL_TYPE);
       } else {

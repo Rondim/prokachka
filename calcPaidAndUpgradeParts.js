@@ -16,7 +16,7 @@ export default function calcPaidUpgradeParts(data) {
 
   let paidParts = null;
   let upgradeParts = null;
-  
+
   if (userInfo === null || errors.upgradesInfo.length > 0) {
     paidParts = {};
     upgradeParts = {};
@@ -36,24 +36,22 @@ export default function calcPaidUpgradeParts(data) {
       const weight585 = calc585weight(orders[id], 'weight');
       const newWeightToUpgrade = currentWeightToUpgrade - weight585;
       if (newWeightToUpgrade >= 0) {
-        upgradeParts[id] = { weight: orders[id]['weight'], parted: false }
+        upgradeParts[id] = { weight: orders[id]['weight'], parted: false };
       }
       if (currentWeightToUpgrade <= 0) {
         paidParts[id] = { weight: orders[id]['weight'], parted: false };
       }
       if (currentWeightToUpgrade > 0 && newWeightToUpgrade < 0) {
-        upgradeParts[id] = { weight: currentWeightToUpgrade, parted: true },
-        paidParts[id] = { 
-          weight: orders[id]['weight'] - currentWeightToUpgrade, 
-          parted: true 
+        upgradeParts[id] = { weight: currentWeightToUpgrade, parted: true };
+        paidParts[id] = {
+          weight: orders[id]['weight'] - currentWeightToUpgrade,
+          parted: true
         };
       }
       currentWeightToUpgrade = newWeightToUpgrade;
     });
   }
 
-  
-  
   return {
     ...data,
     ordersInfo: {

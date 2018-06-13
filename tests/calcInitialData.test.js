@@ -41,7 +41,7 @@ describe('calcInitialData', () => {
     expect(result.userInfo).toEqual(user);
   });
   it('should work with undefineds', () => {
-    const result = calcInitialData(); 
+    const result = calcInitialData();
     expect(result.ordersInfo.orders).toEqual({});
     expect(result.ordersInfo.ordersWeightToCount585).toBeCloseTo(0);
     expect(result.ordersInfo.ordersWeight).toBeCloseTo(0);
@@ -83,7 +83,7 @@ describe('calcInitialData', () => {
       expect(result[3]['id']).toBe('3'); // Затем с большим productionCost на грамм
       expect(result[4]['id']).toBe('1'); // Потом с более меньшим
     });
-    
+
     it('calcActualAddWeight works', () => {
       const scrapWeight1 = 0.1;
       const scrapWeight2 = 0.2;
@@ -92,16 +92,16 @@ describe('calcInitialData', () => {
       const result1 = calcActualAddWeight(scrapWeight1, addWeight);
       const result2 = calcActualAddWeight(scrapWeight2, addWeight);
       const result3 = calcActualAddWeight(scrapWeight3, addWeight);
-      expect(result1).toBe(0.1); 
-      expect(result2).toBe(0.1); 
-      expect(result3).toBe(0.05); 
+      expect(result1).toBe(0.1);
+      expect(result2).toBe(0.1);
+      expect(result3).toBe(0.05);
     });
-    
+
     it('setActualAddWeight works', () => {
       const upgrades = [
-        { id: '31', probe: 'AU_585', weight: 1.5, actualWeight: 1.3 },
-        { id: '32', probe: 'AU_375', weight: 2.4, actualWeight: 2.0 },
-        { id: '33', probe: 'AU_585', weight: 1.8, actualWeight: 1.4 }
+        { id: '31', probe: 'Au 585', weight: 1.5, weightOfMetal: 1.3 },
+        { id: '32', probe: 'Au 375', weight: 2.4, weightOfMetal: 2.0 },
+        { id: '33', probe: 'Au 585', weight: 1.8, weightOfMetal: 1.4 }
       ];
       const actualAddWeight585_1 = 0;
       const actualAddWeight585_2 = 0.15;
@@ -115,7 +115,7 @@ describe('calcInitialData', () => {
 
       expect(result1[0].actualAddWeight).toBeCloseTo(0);
       expect(result1[1].actualAddWeight).toBeCloseTo(0);
-      
+
       expect(result2[0].actualAddWeight).toBeCloseTo(0.15);
       expect(result2[1].actualAddWeight).toBeCloseTo(0);
 
