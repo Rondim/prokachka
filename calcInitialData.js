@@ -118,11 +118,11 @@ export default function calcInitialData(
 }
 
 export function setWeightToCountForOrders(orders) {
-  orders.forEach(order => {
+  return orders.map(order => {
     const au585weight = calc585weight(order, 'weight');
-    order['weightToCount585'] = isSales(order) ? 0 : au585weight;
+    const weightToCount585 = isSales(order) ? 0 : au585weight;
+    return { ...order, weightToCount585 };
   });
-  return orders;
 }
 
 export function sortOrders(orders) {
