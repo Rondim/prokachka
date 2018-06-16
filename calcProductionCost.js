@@ -1,14 +1,14 @@
-import { prodCostDefaults } from './consts';
+// import { prodCostDefaults } from './consts';
 
 const calcProductionCost = (data, consts) => {
-  const { 
+  const {
     DEFAULT_DISCOUNT, DEFAULT_METAL_COST, DEFAULT_P_COST,
     DEFAULT_UP
   } = consts;
 
   let { pCost, initialCost, salesCost } = data;
-  let pCostFromInit, currentUp;
-  
+  let pCostFromInit; let currentUp;
+
   pCost = pCost ? pCost : 0;
   const price = salesCost * (1 - DEFAULT_DISCOUNT);
 
